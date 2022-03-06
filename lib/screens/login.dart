@@ -18,6 +18,27 @@ class _LoginState extends State<Login> {
   bool isWaitingForCode = false;
   FirebaseAuth auth = FirebaseAuth.instance;
   bool isActive = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (auth.currentUser != null) {
+      Future.delayed(
+        Duration(milliseconds: 500),
+        () {
+          // kNavigateScreens(context, 'Home Page');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,9 +121,11 @@ class _LoginState extends State<Login> {
         email: emailController.text,
         password: passwordController.text,
       );
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ),
       );
       reset();
     } on FirebaseAuthException catch (e) {

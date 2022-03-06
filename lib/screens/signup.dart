@@ -176,7 +176,7 @@ class _SignUpVendorsState extends State<SignUp> {
           password: passwordController.text,
         );
         sendInfo();
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Login()),
         );
