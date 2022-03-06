@@ -178,7 +178,7 @@ class _SignUpVendorsState extends State<SignUp> {
         sendInfo();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const Login()),
         );
         reset();
       } on FirebaseAuthException catch (e) {
