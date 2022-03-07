@@ -172,7 +172,9 @@ class _HomePageState extends State<HomePage> {
                                                 Icons.delete,
                                                 size: 21,
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                onDelete(data, id);
+                                              },
                                             ),
                                           ],
                                         ),
@@ -281,7 +283,9 @@ class _HomePageState extends State<HomePage> {
                                                 Icons.delete,
                                                 size: 21,
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                onDelete(data, id);
+                                              },
                                             ),
                                           ],
                                         ),
@@ -333,5 +337,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ]),
         ));
+  }
+
+  onDelete(Map data, String id) {
+    messageRef2.doc(id).delete();
   }
 }
