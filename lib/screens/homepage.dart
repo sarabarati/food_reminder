@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:reminder_app/constants.dart';
 import 'package:reminder_app/screens/add_food.dart';
 import 'package:reminder_app/screens/login.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   late CollectionReference messageRef2;
   String type = 'Your Foods';
+
   bool expiring = false;
   bool healthy = false;
   bool expired = false;
@@ -74,7 +77,9 @@ class _HomePageState extends State<HomePage> {
                 // labelColor: kBlack,
                 unselectedLabelColor: Colors.white,
                 labelStyle:
+
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+
                 onTap: (index) {
                   setState(() {
                     type = "Your Foods";
@@ -115,7 +120,9 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasData) {
                       QuerySnapshot<Object?>? query = snapshot.data;
+
                       if (query!.docs.isEmpty) {
+
                         return const Center(
                             child: Text(
                           'No foods yet !',
@@ -130,6 +137,7 @@ class _HomePageState extends State<HomePage> {
                             (doc) {
                               String id = doc.id;
                               Map data = doc.data() as Map;
+
                               var now = DateTime.now();
                               String date = data["date"];
                               DateTime othertime = DateTime.parse(date);
@@ -151,11 +159,13 @@ class _HomePageState extends State<HomePage> {
                               }
                               return Visibility(
                                 visible: expiring,
+
                                 child: Card(
                                     child: Column(
                                   children: <Widget>[
                                     ListTile(
                                       onTap: () {},
+
                                       trailing: SizedBox(
                                         width: 96,
                                         child: Row(
@@ -305,6 +315,7 @@ class _HomePageState extends State<HomePage> {
                                               fontSize: 17),
                                         ),
                                       ),
+
                                     ),
                                   ],
                                 )),
@@ -314,6 +325,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     } else {
+
                       return Column(
                         children: const [
                           SizedBox(
@@ -325,12 +337,14 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ],
+
                       );
                     }
                   },
                 ),
               ],
             ),
+
           ]),
         ));
   }
