@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reminder_app/constants.dart';
-import 'package:reminder_app/widgets/button.dart';
 import 'package:reminder_app/widgets/custom_calender.dart';
 import 'package:reminder_app/widgets/custom_textfield.dart';
 
@@ -14,7 +13,6 @@ class AddFood extends StatefulWidget {
 }
 
 class _AddFoodState extends State<AddFood> {
-  late DateTime _purchaseDateTime;
   late DateTime _expirationDateTime;
 
   String expirationDateStr = DateTime.now().toString().substring(0, 10);
@@ -31,7 +29,6 @@ class _AddFoodState extends State<AddFood> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     String uID = widget.uid.toString();
     food = fireStore.collection('${auth.currentUser!.email}');

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:reminder_app/screens/add_food.dart';
 import 'package:reminder_app/screens/homepage.dart';
 import 'package:reminder_app/screens/login.dart';
-import 'package:reminder_app/screens/signup.dart';
 
 import 'constants.dart';
 
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: kDarkBlue,
         ),
       ),
-      home: Login(),
+      home: const Login(),
     );
   }
 }
