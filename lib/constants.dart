@@ -11,3 +11,4 @@ const kBlue = Color(0xFF009ee2);
 const kSblue = Color(0xFF252c4a);
 const kBackground = Color(0xFFfcfcfc);
 const kGrey = Color(0xFF757575);
+const kYellow = Color(0xFFefcc00);
