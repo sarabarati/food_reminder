@@ -3,59 +3,76 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reminder_app/constants.dart';
 import 'package:reminder_app/widgets/custom_calender.dart';
-import 'package:reminder_app/widgets/custom_textfield.dart';
+import 'package:reminder_app/widgets/custom_textfield2.dart';
 
-class AddFood extends StatefulWidget {
+class Edit extends StatefulWidget {
+  Edit({
+    required this.initialFoodName,
+    required this.initialLocation,
+    required this.id,
+    required this.date,
+  });
+
+  String initialFoodName;
+
+  String initialLocation;
+
+  String id;
+
+  String date;
+
   @override
-  State<AddFood> createState() => _AddFoodState();
-  AddFood({required this.uid});
-  String uid;
+  State<Edit> createState() => _EditState();
 }
 
-class _AddFoodState extends State<AddFood> {
-  late DateTime _expirationDateTime;
-
-  String expirationDateStr = DateTime.now().toString().substring(0, 10);
-
-  double height = 25;
-
+class _EditState extends State<Edit> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
-  late CollectionReference food;
+  double height = 25;
 
-  TextEditingController foodNameController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
+  late String expirationDateStr;
+
+  late DateTime _expirationDateTime;
+
+  late CollectionReference foodRef;
+
+  late TextEditingController foodNameController;
+  late TextEditingController locationController;
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    String uID = widget.uid.toString();
-    food = fireStore.collection('${auth.currentUser!.email}');
+    foodRef = fireStore.collection('${auth.currentUser!.email}');
+    foodNameController = TextEditingController(text: widget.initialFoodName);
+    locationController = TextEditingController(text: widget.initialLocation);
+    expirationDateStr = widget.date;
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    String initialFoodName = widget.initialFoodName;
+    String initialLocation = widget.initialLocation;
+    String id = widget.id;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text('Add Food'),
+        title: Text('Edit food'),
       ),
-      backgroundColor: kWhite,
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: 20),
-            CustomTextField(
-              text: "Food's Name",
-              hintText: 'enter food\'s name...',
+            CustomTextField2(
+              text: 'Food\s name',
+              initialText: initialFoodName,
               controllerText: foodNameController,
             ),
             SizedBox(height: height),
-            CustomTextField(
+            CustomTextField2(
               text: 'Location',
-              hintText: 'enter the location...',
+              initialText: initialLocation,
               controllerText: locationController,
             ),
             SizedBox(height: height),
@@ -76,21 +93,11 @@ class _AddFoodState extends State<AddFood> {
                   style: ElevatedButton.styleFrom(
                     primary: kDarkBlue, // Background color
                   ),
-                  onPressed: () {
-                    if (foodNameController.text == '' ||
-                        locationController.text == '') {
-                      final snackBar = SnackBar(
-                        content: Text(
-                          'Please fill all fields',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                    addToFireStore();
+                  onPressed: () async {
+                    await edit();
                   },
                   child: Text(
-                    'Add to your list',
+                    'Edit',
                   ),
                 ),
               ),
@@ -102,9 +109,10 @@ class _AddFoodState extends State<AddFood> {
   }
 
   setExpirationDate() async {
+    String date = widget.date;
     _expirationDateTime = (await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateTime.parse(date),
       firstDate: DateTime(2010),
       lastDate: DateTime(2030),
       builder: (context, child) {
@@ -130,17 +138,18 @@ class _AddFoodState extends State<AddFood> {
     });
   }
 
-  addToFireStore() async {
-    Map<String, dynamic> map = new Map();
-    map["food's name"] = foodNameController.text;
-    map["location"] = locationController.text;
-    map['date'] = expirationDateStr;
+  edit() async {
+    String id = widget.id;
+    String foodName = foodNameController.text;
+    String location = locationController.text;
+    String date = widget.date;
 
-    await food.add(map).then((value) => print(value)).whenComplete(
-      () {
-        print('done');
-        Navigator.pop(context);
-      },
-    );
+    DocumentReference doc = foodRef.doc(id);
+    await doc.update({
+      "food's name": foodName,
+      "location": location,
+      "date": expirationDateStr,
+    });
+    Navigator.pop(context);
   }
 }

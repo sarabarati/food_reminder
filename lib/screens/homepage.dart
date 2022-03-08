@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder_app/constants.dart';
 import 'package:reminder_app/screens/add_food.dart';
+import 'package:reminder_app/screens/edit.dart';
 import 'package:reminder_app/screens/login.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -77,7 +77,6 @@ class _HomePageState extends State<HomePage> {
                 // labelColor: kBlack,
                 unselectedLabelColor: Colors.white,
                 labelStyle:
-
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
 
                 onTap: (index) {
@@ -122,7 +121,6 @@ class _HomePageState extends State<HomePage> {
                       QuerySnapshot<Object?>? query = snapshot.data;
 
                       if (query!.docs.isEmpty) {
-
                         return const Center(
                             child: Text(
                           'No foods yet !',
@@ -159,13 +157,11 @@ class _HomePageState extends State<HomePage> {
                               }
                               return Visibility(
                                 visible: expiring,
-
                                 child: Card(
                                     child: Column(
                                   children: <Widget>[
                                     ListTile(
                                       onTap: () {},
-
                                       trailing: SizedBox(
                                         width: 96,
                                         child: Row(
@@ -175,7 +171,16 @@ class _HomePageState extends State<HomePage> {
                                                 Icons.edit,
                                                 size: 21,
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                String id = doc.id;
+                                                String foodName =
+                                                    data["food's name"];
+                                                String location =
+                                                    data["location"];
+                                                String date = data["date"];
+                                                onEdit1(foodName, location, id,
+                                                    date);
+                                              },
                                             ),
                                             IconButton(
                                               icon: const Icon(
@@ -286,7 +291,20 @@ class _HomePageState extends State<HomePage> {
                                                 Icons.edit,
                                                 size: 21,
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                String id = doc.id;
+                                                String foodName =
+                                                    data["food's name"];
+                                                String location =
+                                                    data["location"];
+                                                String date = data["date"];
+                                                onEdit2(
+                                                  foodName,
+                                                  location,
+                                                  id,
+                                                  date
+                                                );
+                                              },
                                             ),
                                             IconButton(
                                               icon: const Icon(
@@ -319,7 +337,6 @@ class _HomePageState extends State<HomePage> {
                                               fontSize: 17),
                                         ),
                                       ),
-
                                     ),
                                   ],
                                 )),
@@ -329,7 +346,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     } else {
-
                       return Column(
                         children: const [
                           SizedBox(
@@ -341,19 +357,45 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ],
-
                       );
                     }
                   },
                 ),
               ],
             ),
-
           ]),
         ));
   }
 
   onDelete(Map data, String id) {
     messageRef2.doc(id).delete();
+  }
+
+  onEdit1(String foodName, String location, String id, String date) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Edit(
+          initialFoodName: foodName,
+          initialLocation: location,
+          id: id,
+          date: date,
+        ),
+      ),
+    );
+  }
+
+  onEdit2(String foodName, String location, String id, String date) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Edit(
+          initialFoodName: foodName,
+          initialLocation: location,
+          id: id,
+          date: date,
+        ),
+      ),
+    );
   }
 }
